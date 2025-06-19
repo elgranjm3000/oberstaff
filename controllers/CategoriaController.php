@@ -24,7 +24,7 @@ class CategoriaController extends ActiveController
         
         // Autenticación por token (opcional)
         $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::class,
+            'class'=>\app\components\HardcodedTokenAuth::class,
             'except' => ['index', 'view', 'options'], // Acciones públicas
         ];
         

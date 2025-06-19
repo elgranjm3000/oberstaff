@@ -1,10 +1,15 @@
-const API_BASE_URL = 'https://apiweb3000.ct.ws/inventario/web';
+const API_BASE_URL = '/api';
 
 export class ApiService {
   // Categorías
   static async getCategorias(): Promise<any[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/categorias`);
+      const response = await fetch(`${API_BASE_URL}/categorias`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) throw new Error('Error al obtener categorías');
       return await response.json();
     } catch (error) {
@@ -62,8 +67,13 @@ export class ApiService {
   // Productos
   static async getProductos(): Promise<any[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/productos`);
-      if (!response.ok) throw new Error('Error al obtener productos');
+      const response = await fetch(`${API_BASE_URL}/productos`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) throw new Error('Error al obtener productos aqui');
       return await response.json();
     } catch (error) {
       console.error('Error fetching productos:', error);
@@ -73,7 +83,12 @@ export class ApiService {
 
   static async getProducto(id: number): Promise<any> {
     try {
-      const response = await fetch(`${API_BASE_URL}/productos/${id}`);
+      const response = await fetch(`${API_BASE_URL}/productos/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) throw new Error('Error al obtener producto');
       return await response.json();
     } catch (error) {
@@ -125,6 +140,23 @@ export class ApiService {
     } catch (error) {
       console.error('Error deleting producto:', error);
       throw error;
+    }
+  }
+
+  // Nuevo método para filtrar productos por nombre
+  static async filtrarProductosPorNombre(nombre: string): Promise<any[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/productos/filtrar?name=${encodeURIComponent(nombre)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) throw new Error('Error al filtrar productos');
+      return await response.json();
+    } catch (error) {
+      console.error('Error filtering productos:', error);
+      return [];
     }
   }
 }
