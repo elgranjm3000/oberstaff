@@ -9,6 +9,7 @@ require_once __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 $config = [
     'id' => 'unit-tests',
     'basePath' => dirname(__DIR__),
+    'bootstrap' => ['log'], // Asegúrate de incluir esto
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
@@ -41,6 +42,30 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\DummyCache',
+        ],
+        // Añade estos componentes esenciales
+        'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'targets' => [
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
+                ],
+            ],
+        ],
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                ],
+            ],
+        ],
+    ],
+    'container' => [ // Configuración explícita del contenedor DI
+        'definitions' => [
+            'yii\di\Container' => function() {
+                return Yii::$container;
+            },
         ],
     ],
     'aliases' => [
